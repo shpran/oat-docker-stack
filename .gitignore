@@ -1,0 +1,27 @@
+/.idea/
+
+# >>> Services
+/services/composer/cache/*
+!/services/composer/cache/.gitkeep
+
+/services/elasticsearch/data/*
+!/services/elasticsearch/data/.gitkeep
+
+/services/mysql/data/*
+!/services/mysql/data/.gitkeep
+
+/services/opensearch/data/*
+!/services/opensearch/data/.gitkeep
+
+/services/pgsql/data/*
+!/services/pgsql/data/.gitkeep
+
+/services/redis/data/*
+!/services/redis/data/.gitkeep
+
+/services/ssl/*
+!/services/ssl/.gitkeep
+# <<< Services
+
+/app/
+/.env
