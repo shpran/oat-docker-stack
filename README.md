@@ -24,7 +24,7 @@
    ```shell
    mkdir app
    ```
-   Further you can store your symfony project inside this `app` folder.
+   Further you can store your OAT project inside this `app` folder.
 3. Make a copy of `.env.example` file and name it `.env`:
    ```shell
    cp .env.example .env
