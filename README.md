@@ -18,7 +18,7 @@
 ## Usage
 1. Clone this repository to your local machine and go inside:
    ```shell
-   git clone https://github.com/shpran/docker-stack && cd docker-stack
+   git clone https://github.com/shpran/oat-docker-stack && cd oat-docker-stack
    ```
 2. Create an `app` directory:
    ```shell
