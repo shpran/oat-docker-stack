@@ -88,12 +88,7 @@ RUN docker-php-ext-install pdo \
 RUN echo //registry.npmjs.org/:_authToken=$NPM_TOKEN > /root/.npmrc
 
 RUN npm i -g @oat-sa/tao-extension-release
-ADD ./.tao-extension-release /usr/local/share/.tao-extension-release
-RUN envsubst < /usr/local/share/.tao-extension-release > ~/.tao-extension-release
-
 RUN npm i -g @oat-sa/tao-release-notes
-ADD ./.tao-release-notes /usr/local/share/.tao-release-notes
-RUN envsubst < /usr/local/share/.tao-release-notes > ~/.tao-release-notes
 
 RUN mkdir /var/www/tools
 RUN mkdir /var/www/tools/php-cs-fixer \
@@ -123,6 +118,12 @@ RUN wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | 
 ADD ./.bashrc /usr/local/share/.bashrc
 RUN cat /usr/local/share/.bashrc >> ~/.bashrc \
     && /bin/bash -c 'source ~/.bashrc'
+
+ADD ./.tao-extension-release /usr/local/share/.tao-extension-release
+RUN envsubst < /usr/local/share/.tao-extension-release > ~/.tao-extension-release
+
+ADD ./.tao-release-notes /usr/local/share/.tao-release-notes
+RUN envsubst < /usr/local/share/.tao-release-notes > ~/.tao-release-notes
 
 RUN sudo mkdir /var/www/$PROJECT_NAME
 
