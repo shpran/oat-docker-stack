@@ -10,9 +10,6 @@ ARG GITHUB_NAME
 
 ARG NPM_TOKEN
 
-RUN usermod -u 1000 www-data
-RUN usermod -G staff www-data
-
 RUN apt update \    
     && apt install -y \
         libonig-dev \
@@ -35,11 +32,16 @@ RUN apt update \
         xfonts-75dpi \
         xfonts-base \
         fontconfig \
-        nodejs \
         build-essential \
-        npm \
         gettext-base \
+        npm \
     && rm -rf /var/lib/apt/lists/*
+
+RUN usermod -u 1000 www-data
+RUN usermod -G sudo www-data
+RUN usermod -d /home/www-data www-data
+RUN mkdir /home/www-data && chown -R www-data:www-data /home/www-data
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer config -g github-protocols https \
@@ -51,10 +53,6 @@ RUN wget 'https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wk
     && ln -s /usr/local/bin/wkhtmltopdf /usr/bin/wkhtmltopdf \
     && apt-get -f install
 
-RUN wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash \
-    && export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")" \
-    && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
 RUN wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash \
     && mv git-completion.bash /usr/local/share/.git-completion.bash
 
@@ -63,10 +61,6 @@ RUN git config --global user.email "${GITHUB_EMAIL}" \
     && git config --global credential.helper store
 RUN touch ~/.git-credentials \
     && echo https://$GITHUB_USER:$GITHUB_TOKEN@github.com > ~/.git-credentials
-
-ADD ./.bashrc /usr/local/share/.bashrc
-RUN cat /usr/local/share/.bashrc >> ~/.bashrc \
-    && /bin/bash -c 'source ~/.bashrc'
 
 RUN docker-php-ext-configure gd --with-jpeg=/usr \
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
@@ -119,5 +113,17 @@ RUN docker-php-source delete \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/* /var/tmp/*
 
-RUN mkdir /var/www/$PROJECT_NAME
-WORKDIR /var/www/$PROJECT_NAME
+USER www-data
+
+ENV NVM_DIR=/home/www-data/.nvm
+ENV NODE_VERSION=$DEFAULT_NODE_VERSION
+
+RUN wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+
+ADD ./.bashrc /usr/local/share/.bashrc
+RUN cat /usr/local/share/.bashrc >> ~/.bashrc \
+    && /bin/bash -c 'source ~/.bashrc'
+
+RUN sudo mkdir /var/www/$PROJECT_NAME
+
+WORKDIR /var/www/tao

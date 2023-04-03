@@ -3,6 +3,6 @@ parse_git_branch() {
 }
 export PS1="\u@\h \[\e[32m\]\w \[\e[91m\]\$(parse_git_branch)\[\e[00m\]$ "
 
-if [ -f /usr/local/share/.git-completion.bash ]; then
-   source /usr/local/share/.git-completion.bash
-fi
+[ -s /usr/local/share/.git-completion.bash ] && \. /usr/local/share/.git-completion.bash
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"

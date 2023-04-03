@@ -18,12 +18,13 @@ services:
         volumes:
             - ./services/php/fpm/php.ini:/usr/local/etc/php/conf.d/php.ini
             - ./app:/var/www/${PROJECT_NAME:?must be specified}
-            - ./services/composer/cache:/root/.composer/cache
+            - ./services/composer/cache:/home/www-data/.composer/cache
         environment:
             - PHP_IDE_CONFIG=serverName=${PROJECT_NAME:?must be specified}
             - TIMEZONE=${TIMEZONE:-Europe/Luxembourg}
-            - XDEBUG_CLIENT_HOST=${XDEBUG_CLIENT_HOST}
+            - XDEBUG_CLIENT_HOST=${XDEBUG_CLIENT_HOST:-127.0.0.1}
             - COMPOSER_AUTH={"github-oauth":{"github.com":"${GITHUB_TOKEN:?must be specified}"}}
+            - DEFAULT_NODE_VERSION=${DEFAULT_NODE_VERSION:-10.24.1}
         networks:
             - default
             - oat-docker-stack
