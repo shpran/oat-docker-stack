@@ -44,7 +44,7 @@ services:
             - ./app:/var/www/${PROJECT_NAME:?must be specified}
         environment:
             - PROJECT_NAME=${PROJECT_NAME:?must be specified}
-            - PATH_TO_ROOT=${PATH_TO_ROOT:-''}
+            - PATH_TO_ROOT=${PATH_TO_ROOT:-}
         networks:
             - default
             - oat-docker-stack
@@ -120,11 +120,11 @@ services:
         container_name: ${CONTAINER_PREFIX:?must be specified}_blackfire
         image: blackfire/blackfire:2.5.2
         environment:
-            - BLACKFIRE_LOG_LEVEL=${BLACKFIRE_LOG_LEVEL:-''}
-            - BLACKFIRE_SERVER_ID=${BLACKFIRE_SERVER_ID:-''}
-            - BLACKFIRE_SERVER_TOKEN=${BLACKFIRE_SERVER_TOKEN:-''}
-            - BLACKFIRE_CLIENT_ID=${BLACKFIRE_CLIENT_ID:-''}
-            - BLACKFIRE_CLIENT_TOKEN=${BLACKFIRE_CLIENT_TOKEN:-''}
+            - BLACKFIRE_LOG_LEVEL=${BLACKFIRE_LOG_LEVEL:-}
+            - BLACKFIRE_SERVER_ID=${BLACKFIRE_SERVER_ID:-}
+            - BLACKFIRE_SERVER_TOKEN=${BLACKFIRE_SERVER_TOKEN:-}
+            - BLACKFIRE_CLIENT_ID=${BLACKFIRE_CLIENT_ID:-}
+            - BLACKFIRE_CLIENT_TOKEN=${BLACKFIRE_CLIENT_TOKEN:-}
         external_links:
             - nginx:${PROJECT_NAME:?must be specified}.docker.loc
         expose:
